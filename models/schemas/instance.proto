@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "models/schemas/schema.proto";
+
+package Treatment;
+
+//Treatment
+message Treatment{
+    string treatment_id = 1;
+    int64 doctor_id = 2;
+    uint64 patient_id = 3;
+    TreatmentStatus status = 4;
+    string schema_instace_id = 5;
+    google.protobuf.Timestamp started_at = 6;
+    google.protobuf.Timestamp finished_at = 7;
+    google.protobuf.Timestamp deleted_at = 8;
+}
+
+
+message SchemaInstance{
+    string instance_id = 1;
+    Schema schema_reference = 5;
+}
+
+
+enum TreatmentStatus {
+    INSTANCE_STATUS_UNSPECIFIED = 0;
+    INSTANCE_STATUS_RUNNING = 1;
+    INSTANCE_STATUS_BLOCKED = 2;
+    INSTANCE_STATUS_COMPLETED = 3;
+    INSTANCE_STATUS_CANCELLED = 4;
+  }
