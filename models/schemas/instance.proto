@@ -1,6 +1,5 @@
 syntax = "proto3";
 import "google/protobuf/timestamp.proto";
-import "models/schemas/schema.proto";
 
 package Treatment;
 
@@ -14,12 +13,6 @@ message Treatment{
     google.protobuf.Timestamp started_at = 6;
     google.protobuf.Timestamp finished_at = 7;
     google.protobuf.Timestamp deleted_at = 8;
-}
-
-
-message SchemaInstance{
-    string instance_id = 1;
-    Schema schema_reference = 5;
 }
 
 

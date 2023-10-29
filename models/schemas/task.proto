@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+
+package Treatment;
+
+message Task{
+    int64 id = 1; // id of the task (unique for this schema)
+    int32 level = 2; // level of the task
+    string name = 3; //name aof the task
+    TaskStatus status = 4; //status of the task
+    repeated int64 blocked_by = 5; // id of the task that block it
+    optional uint64 resposinble = 6; // person responsible for this task
+    optional int64 time_limit = 7; // time limit for task in minutes
+    repeated Task children = 8; // subtasks of this task 
+    google.protobuf.StringValue comment = 9; // comment
+}
+
+
+enum TaskStatus {
+    TASK_STATUS_UNSPECIFIED = 0;
+    TASK_STATUS_NOT_STARTED = 1;
+    TASK_STATUS_IN_PROGRESS = 2;
+    TASK_STATUS_BLOCKED = 3;
+    TASK_STATUS_DONE = 4;
+}
