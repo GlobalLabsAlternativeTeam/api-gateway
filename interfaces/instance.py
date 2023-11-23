@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
-
-
 class InstaceInterface(ABC):
 
     @abstractmethod
     def __init__(self) -> None:
         super().__init__()
+        
         
     @abstractmethod
     def GetInstances(self, context, patient_id):
@@ -29,4 +28,8 @@ class InstaceInterface(ABC):
 
     @abstractmethod
     def GetTaskStatus(self, context, instance_id, task_id):
+        pass
+
+    @abstractmethod
+    def CreateInstance(self, context, schema, patient_id, doctor_id):
         pass
