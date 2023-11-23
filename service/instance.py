@@ -1,27 +1,46 @@
-from abc import ABC, abstractmethod
+import grpc
 
+import vars
+from interfaces.instance import InstaceInterface
 
-class InstaceInterFace(ABC):
-    @abstractmethod
-    def GetInstances(self, context, patient_id):
+# from grpc.process_execution_service import service__pb2_grpc, service__pb2
+from proto.process_execution_service import service_pb2, service_pb2_grpc
+
+class Instance(InstaceInterface):
+    def __init__(self):
+        super(InstaceInterface, self).__init__()
+        # self.GetInstances()
+        # self.GetInstance()
+        # self.GetInstaceStatus()
+        # self.GetTask()
+        # self.IfTaskIsLocked()
+        # self.GetTaskStatus()
+        # pass
+
+    
+    def GetInstances(self, patient_id):
+        execution_serice = grpc.insecure_channel(f'''localhost:{vars.EXECUTION_SERVICE_PORT}''')
+        execution_service_stub = service_pb2_grpc.ProcessExecutionServiceStub(execution_serice)
+        request = service_pb2.GetInstancesByPatientReq(patient_id = int(patient_id))
+        response = execution_service_stub.GetInstancesByPatient(request)
+        print(f'''response: {response}''')
+        # print(f'''code: {response.keys()}''')
+        return response
+
+    def GetInstance(self):
         pass
 
-    @abstractmethod
-    def GetInstance(self, context, instance_id):
+    def GetInstaceStatus(self):
         pass
 
-    @abstractmethod
-    def GetInstaceStatus(self, context, instance_id):
+    def GetTask(self):
         pass
 
-    @abstractmethod
-    def GetTask(self, context, instance_id, task_id):
+    def GetTask(self):
         pass
 
-    @abstractmethod
-    def IfTaskIsLocked(self, context, instance_id, task_id):
+    def IfTaskIsLocked(self):
         pass
 
-    @abstractmethod
-    def GetTaskStatus(self, context, instance_id, task_id):
+    def GetTaskStatus(self):
         pass
