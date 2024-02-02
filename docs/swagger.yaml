@@ -10,11 +10,18 @@ info:
   version: "1.0.0"
   title: API-Gateway
 paths:
-  '/v1/users/patients':
+  '/v1/users/patients/{doctor_id}':
     get:
       tags:
         - patients
       summary: Get all patients
+      parameters:
+        - name: doctor_id
+          in: path
+          description: ID of the patient
+          required: true
+          schema:
+            type: string
       operationId: getAllPatients
       responses:
         '404':

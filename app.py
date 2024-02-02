@@ -5,23 +5,25 @@ from server.api import API
 app = Flask(__name__)
 api = API()
 
+# Get all the patients by doctor ID 
 @app.route("/v1/users/patients", methods=['GET'])
 def get_patients():
+    doctor_id = request.args.get('doctor_id')
     return "Hello, World!"
 
-
+# For the patient_id get all the treatments: ID, name, status, comlete percentage (?)
 @app.route("/v1/instances/<patient_id>", methods=['GET'])
 def get_instances(patient_id):
     response  = api.get_instances(request.headers, patient_id)
     return response
 
-
+# Get the full treatment
 @app.route("/v1/instance", methods=['GET'])
 def get_instance():
     instance_id = request.args.get('instance_id')
     return "Hello, World!"
 
-
+# Dont' need
 @app.route("/v1/instance/status", methods=['GET'])
 def get_instance_status():
     instance_id = request.args.get('instance_id')
