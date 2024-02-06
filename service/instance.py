@@ -14,9 +14,9 @@ class Instance(InstaceInterface):
 
     
     def GetInstances(self, patient_id):
-        request = service_pb2.GetInstancesByPatientReq(patient_id = int(patient_id))
-        response = self.execution_service_stub.GetInstancesByPatient(request)
-        # print(f'''response: {response}''')
+        request = service_pb2.GetTreatmentsByPatientIDRequest(patient_id = patient_id)
+        response = self.execution_service_stub.GetTreatmentsByPatientID(request)
+        print(f'''Instance response: {response}''')
         return response
 
     def GetInstance(self, context, instance_id):

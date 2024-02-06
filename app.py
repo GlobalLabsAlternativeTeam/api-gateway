@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 from server.api import API
 
@@ -14,49 +14,33 @@ def get_patients():
 # For the patient_id get all the treatments: ID, name, status, comlete percentage (?)
 @app.route("/v1/instances/<patient_id>", methods=['GET'])
 def get_instances(patient_id):
-    response  = api.get_instances(request.headers, patient_id)
-    return response
+    # Get the response from the API
+    response = api.get_instances(request.headers, patient_id)
+    
+    # Convert TreatmentLight objects to dictionaries
+    treatments = []
+    for treatment_light in response:
+        treatment_dict = {
+            "treatment_id": treatment_light.treatment_id,
+            "treatment_name": treatment_light.treatment_name,
+            "status": treatment_light.treatment_status,
+            "treatment_progress": treatment_light.treatment_progress
+        }
+        treatments.append(treatment_dict)
 
+    # Create the final dictionary with patient_id and treatments
+    json_response = {
+        "patient_id": patient_id,
+        "treatments": treatments
+    }
+
+    return jsonify(json_response)
 # Get the full treatment
 @app.route("/v1/instance", methods=['GET'])
 def get_instance():
     instance_id = request.args.get('instance_id')
     return "Hello, World!"
 
-# Dont' need
-@app.route("/v1/instance/status", methods=['GET'])
-def get_instance_status():
-    instance_id = request.args.get('instance_id')
-    return "Hello, World"
-
-
-@app.route("/v1/instance/task", methods=['GET'])
-def get_task():
-    instance_id = request.args.get('instance_id')
-    task_id = request.args.get('task_id')
-    return "Hello, World"
-
-@app.route("/v1/instance/task/is_locked", methods=['GET'])
-def is_task_locked():
-    instance_id = request.args.get('instance_id')
-    task_id = request.args.get('task_id')
-    return "Hello, World"
-
-@app.route("/v1/instance/task/status", methods=['GET'])
-def get_task_status():
-    instance_id = request.args.get('instance_id')
-    task_id = request.args.get('task_id')
-    return "Hello, World"
-
-
-@app.route("/v1/schemas" , methods=['GET'])
-def get_schemas():
-    return "Hello, World"
-
-
-@app.route("/v1/schemas/doctor", methods=['GET'])
-def get_schemas_by_doctor_id():
-    return "Hello world"
 
 
 
