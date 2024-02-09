@@ -33,8 +33,7 @@ paths:
               schema:
                 type: array
                 items:
-                    type: integer
-                    format: int64
+                    type: string
   # '/v1/users/patients/{patient_id}':
   #   get:
   #     tags:

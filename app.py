@@ -7,16 +7,16 @@ app = Flask(__name__)
 api = API()
 
 # Get all the patients by doctor ID 
-@app.route("/v1/users/patients", methods=['GET'])
-def get_patients():
-    doctor_id = request.args.get('doctor_id')
+@app.route("/v1/users/patients/<doctor_id>", methods=['GET'])
+def get_patients(doctor_id):
+    # doctor_id = request.args.get('doctor_id')
     
     # Get the response from the API
     response = api.get_patients(request.headers, doctor_id)
 
-    # TODO: Parse response to generate json response according to contract
+    # Return the response as a json object
+    return jsonify(response)
 
-    return "Hello, World!"
 
 # For the patient_id get all the treatments: ID, name, status, comlete percentage (?)
 @app.route("/v1/instances/<patient_id>", methods=['GET'])
