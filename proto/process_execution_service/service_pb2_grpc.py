@@ -24,6 +24,11 @@ class ProcessExecutionServiceStub(object):
                 request_serializer=proto_dot_process__execution__service_dot_service__pb2.GetTreatmentByIDRequest.SerializeToString,
                 response_deserializer=proto_dot_process__execution__service_dot_service__pb2.GetTreatmentByIDResponse.FromString,
                 )
+        self.GetPatientsByDoctorID = channel.unary_unary(
+                '/alt_team.process_execution_service.ProcessExecutionService/GetPatientsByDoctorID',
+                request_serializer=proto_dot_process__execution__service_dot_service__pb2.GetPatientsByDoctorIDRequest.SerializeToString,
+                response_deserializer=proto_dot_process__execution__service_dot_service__pb2.GetPatientsByDoctorIDResponse.FromString,
+                )
 
 
 class ProcessExecutionServiceServicer(object):
@@ -36,6 +41,12 @@ class ProcessExecutionServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetTreatmentByID(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPatientsByDoctorID(self, request, context):
         """rpc GetBookList(GetBookListRequest) returns (GetBookListResponse) {}
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -54,6 +65,11 @@ def add_ProcessExecutionServiceServicer_to_server(servicer, server):
                     servicer.GetTreatmentByID,
                     request_deserializer=proto_dot_process__execution__service_dot_service__pb2.GetTreatmentByIDRequest.FromString,
                     response_serializer=proto_dot_process__execution__service_dot_service__pb2.GetTreatmentByIDResponse.SerializeToString,
+            ),
+            'GetPatientsByDoctorID': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPatientsByDoctorID,
+                    request_deserializer=proto_dot_process__execution__service_dot_service__pb2.GetPatientsByDoctorIDRequest.FromString,
+                    response_serializer=proto_dot_process__execution__service_dot_service__pb2.GetPatientsByDoctorIDResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -96,5 +112,22 @@ class ProcessExecutionService(object):
         return grpc.experimental.unary_unary(request, target, '/alt_team.process_execution_service.ProcessExecutionService/GetTreatmentByID',
             proto_dot_process__execution__service_dot_service__pb2.GetTreatmentByIDRequest.SerializeToString,
             proto_dot_process__execution__service_dot_service__pb2.GetTreatmentByIDResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetPatientsByDoctorID(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/alt_team.process_execution_service.ProcessExecutionService/GetPatientsByDoctorID',
+            proto_dot_process__execution__service_dot_service__pb2.GetPatientsByDoctorIDRequest.SerializeToString,
+            proto_dot_process__execution__service_dot_service__pb2.GetPatientsByDoctorIDResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
