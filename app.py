@@ -10,6 +10,12 @@ api = API()
 @app.route("/v1/users/patients", methods=['GET'])
 def get_patients():
     doctor_id = request.args.get('doctor_id')
+    
+    # Get the response from the API
+    response = api.get_patients(request.headers, doctor_id)
+
+    # TODO: Parse response to generate json response according to contract
+
     return "Hello, World!"
 
 # For the patient_id get all the treatments: ID, name, status, comlete percentage (?)

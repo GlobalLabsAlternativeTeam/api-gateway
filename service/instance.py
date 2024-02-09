@@ -11,7 +11,6 @@ class Instance(InstaceInterface):
         super(InstaceInterface, self).__init__()
         self.execution_serice = grpc.insecure_channel(f'''localhost:{vars.EXECUTION_SERVICE_PORT}''')
         self.execution_service_stub = service_pb2_grpc.ProcessExecutionServiceStub(self.execution_serice)
-
     
     def GetInstances(self, patient_id):
         print("START GetInstances Instance")
@@ -26,8 +25,14 @@ class Instance(InstaceInterface):
         response = self.execution_service_stub.GetTreatmentByID(request)
         print("START GetInstance Instance")
         return response
-        
 
+    def GetPatients(self, context, doctor_id):
+        print("START GetPatients Instance")
+        request = service_pb2.GetPatientsByDoctorIDRequest(doctor_id = doctor_id)
+        response = self.execution_service_stub.GetPatientsByDoctorID(request)
+        print("START GetPatients Instance")
+        return response
+        
     def GetInstaceStatus(self, context, instance_id):
         pass
 

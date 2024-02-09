@@ -13,3 +13,7 @@ class InstaceInterface(ABC):
     @abstractmethod
     def GetInstance(self, context, instance_id):
         pass
+
+    @abstractmethod
+    def GetPatients(self, context, doctor_id):
+        pass
