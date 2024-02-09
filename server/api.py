@@ -17,11 +17,9 @@ class API():
         response = instance.GetPatients(doctor_id)
         response_dict = MessageToDict(response)
         patients_array = response_dict['patients']
-   
-        # TODO: Parse and return patients
 
         print("END get_patients API")
-        return []
+        return patients_array
 
     def get_instances(self, context, patient_id):
         print("START get_instances API")
