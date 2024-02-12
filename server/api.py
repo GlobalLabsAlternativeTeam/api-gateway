@@ -16,7 +16,7 @@ class API():
         
         response = instance.GetPatients(doctor_id)
         response_dict = MessageToDict(response)
-        patients_array = response_dict['patients']
+        patients_array = response_dict['patient_ids']
 
         print("END get_patients API")
         return patients_array
