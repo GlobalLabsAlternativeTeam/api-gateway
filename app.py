@@ -129,6 +129,12 @@ def complete_task():
 def get_schemas():
     return "Not implemented"
 
+@app.route("/v1/schema/<schema_id>", methods=["GET"])
+def get_schema(schema_id):
+    print(schema_id)
+    return "Not implemented"
+
+
 
 @app.route("/v1/schema/update", methods=["GET"])
 def update_schema():
