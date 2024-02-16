@@ -95,57 +95,6 @@ def get_instance():
 
     return json_response
 
-
-@app.route("/v1/instance/", methods=['GET'])
-def get_instance():
-    instance_id = request.args.get('id')
-    response = api.get_instance(request.headers, instance_id)
-    
-    # Assuming response is a Treatment object
-    treatment = response
-
-    # Convert Treatment object to a dictionary
-    treatment_dict = {
-        "treatment_id": treatment.treatment_id,
-        "doctor_id": treatment.doctor_id,
-        "patient_id": treatment.patient_id,
-        "status": treatment.status,
-        "pattern_instance": {
-            "instance_id": treatment.pattern_instance.instance_id,
-            "status": treatment.pattern_instance.status,
-            "pattern_id": treatment.pattern_instance.pattern_id,
-            "author_id": treatment.pattern_instance.author_id,
-            "pattern_name": treatment.pattern_instance.pattern_name,
-            "created_at": treatment.pattern_instance.created_at,
-            "updated_at": treatment.pattern_instance.updated_at,
-            "deleted_at": treatment.pattern_instance.deleted_at,
-            "tasks": [
-                {
-                    "id": task.id,
-                    "level": task.level,
-                    "name": task.name,
-                    "status": task.status,
-                    "blocked_by": task.blocked_by,
-                    "responsible": task.responsible,
-                    "time_limit": task.time_limit,
-                    "children": [child.id for child in task.children],
-                    "comment": task.comment
-                }
-                for task in treatment.pattern_instance.tasks
-            ]
-        },
-        "started_at": treatment.started_at,
-        "finished_at": treatment.finished_at,
-        "deleted_at": treatment.deleted_at
-    }
-
-    print(treatment)
-
-    # Convert dictionary to JSON string
-    json_response = json.dumps(treatment_dict)
-
-    return json_response
-
 @app.route("/v1/instances/create", methods=["GET"])
 def create_instance():
     return "Not implemented"
