@@ -39,3 +39,10 @@ class Instance(InstaceInterface):
         response = self.execution_service_stub.CompleteTasks(request)
         print("END CompleteTasks Instance")
         return response
+    
+    def CreateInstance(self, schema, patient_id, doctor_id):
+        print("START CreateInstance Instance")
+        request = service_pb2.CreateInstanceRequest(schema = schema, patient_id = patient_id, doctor_id = doctor_id)
+        response = self.execution_service_stub.CreateInstance(request)
+        print("END CreateInstance Instance")
+        return response

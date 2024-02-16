@@ -113,4 +113,10 @@ class API():
             )
             task_lights.append(task_light)
         print("END complete_task API")
-        return task_lights
+        return task_lights, None
+    
+
+    def create_instance(context, schema_id, patient_id, doctor_id):
+        # 1 get schema
+        # Create instance
+        return "Not implemented", None

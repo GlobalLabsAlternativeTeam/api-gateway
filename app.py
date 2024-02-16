@@ -95,9 +95,33 @@ def get_instance():
 
     return json_response
 
-@app.route("/v1/instances/create", methods=["GET"])
+@app.route("/v1/instances/create", methods=["POST"])
 def create_instance():
-    return "Not implemented"
+    try: 
+         data = request.json
+    except Exception as e:
+        return {"error": "Message is not a JSON string"}
+    try:
+        schema_id = data["schema_id"]
+    except Exception as e:
+        return {"error": "Message does not contain schema_id"}
+    
+    try: 
+        patient_id = data["patient_id"]
+    except Exception as e:
+        return {"error": "Message does not contain patient_id"}
+    
+    try: 
+        doctor_id = data["doctor_id"]
+    except Exception as e:
+        return {"error": "Message does not contain doctor_id"}
+    
+    response, error = api.create_instance(request.headers, schema_id, patient_id, doctor_id)
+    if error != "":
+        return {"error": error}
+
+    else:
+        return response
 
 @app.route("/v1/instance/tasks/complete", methods=["POST"])
 def complete_task():
