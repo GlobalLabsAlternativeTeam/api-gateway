@@ -42,9 +42,9 @@ def get_instances(patient_id):
     }
 
     return jsonify(json_response)
+
+
 # Get the full treatment
-
-
 @app.route("/v1/instance/", methods=['GET'])
 def get_instance():
     instance_id = request.args.get('id')
@@ -88,12 +88,8 @@ def get_instance():
         "deleted_at": treatment.deleted_at
     }
 
-    print(treatment)
-
-    # Convert dictionary to JSON string
-    json_response = json.dumps(treatment_dict)
-
-    return json_response
+    # Convert dictionary to JSON
+    return jsonify(treatment_dict)
 
 
 

@@ -47,17 +47,22 @@ class API():
         instance = Instance()
         
         response = instance.GetInstance(instance_id)
+        print(response)
+        
         response_dict = MessageToDict(response)
         treatment_data = response_dict['treatment']
+
 
         pattern_instance_data = treatment_data['patternInstance']
 
         tasks_data = pattern_instance_data.get('tasks', [])
 
-
+        print(tasks_data)
 
         tasks = []
         for task_data in tasks_data:
+            print(task_data)
+            
             task = Task(
                 id=task_data['id'],
                 level=task_data.get('level'),
