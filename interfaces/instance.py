@@ -17,3 +17,11 @@ class InstaceInterface(ABC):
     @abstractmethod
     def GetPatients(self, context, doctor_id):
         pass
+
+    @abstractmethod
+    def CompleteTasks(self, instance_id, task_ids):
+        pass
+
+    @abstractmethod
+    def CreateInstance(self, schema, patient_id, doctor_id):
+        pass

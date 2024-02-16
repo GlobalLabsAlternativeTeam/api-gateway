@@ -3,6 +3,7 @@ from models.types.pattern_instance import PatternInstance
 from models.types.task import Task
 from models.types.treatment import Treatment
 from models.types.treatment_light import TreatmentLight
+from models.types.task_light import TaskLight
 from service.instance import Instance
 from google.protobuf.json_format import MessageToDict
 
@@ -102,3 +103,25 @@ class API():
         print("END get_instances API")
         return treatment
         
+    def complete_task(self, context, instance_id, task_ids):
+        print("START complete_task API")
+        instance = Instance()
+        response = instance.CompleteTasks(instance_id, task_ids)
+        response_dict = MessageToDict(response)
+        tasks_array = response_dict.get('tasks_light')
+
+        task_lights = []
+        for task_light_dict in tasks_array:
+            task_light = TaskLight(
+                id = task_light_dict["id"],
+                status = task_light_dict["status"]
+            )
+            task_lights.append(task_light)
+        print("END complete_task API")
+        return task_lights, None
+    
+
+    def create_instance(context, schema_id, patient_id, doctor_id):
+        # 1 get schema
+        # Create instance
+        return "Not implemented", None
