@@ -96,6 +96,100 @@ def get_instance():
     return json_response
 
 
+@app.route("/v1/instance/", methods=['GET'])
+def get_instance():
+    instance_id = request.args.get('id')
+    response = api.get_instance(request.headers, instance_id)
+    
+    # Assuming response is a Treatment object
+    treatment = response
+
+    # Convert Treatment object to a dictionary
+    treatment_dict = {
+        "treatment_id": treatment.treatment_id,
+        "doctor_id": treatment.doctor_id,
+        "patient_id": treatment.patient_id,
+        "status": treatment.status,
+        "pattern_instance": {
+            "instance_id": treatment.pattern_instance.instance_id,
+            "status": treatment.pattern_instance.status,
+            "pattern_id": treatment.pattern_instance.pattern_id,
+            "author_id": treatment.pattern_instance.author_id,
+            "pattern_name": treatment.pattern_instance.pattern_name,
+            "created_at": treatment.pattern_instance.created_at,
+            "updated_at": treatment.pattern_instance.updated_at,
+            "deleted_at": treatment.pattern_instance.deleted_at,
+            "tasks": [
+                {
+                    "id": task.id,
+                    "level": task.level,
+                    "name": task.name,
+                    "status": task.status,
+                    "blocked_by": task.blocked_by,
+                    "responsible": task.responsible,
+                    "time_limit": task.time_limit,
+                    "children": [child.id for child in task.children],
+                    "comment": task.comment
+                }
+                for task in treatment.pattern_instance.tasks
+            ]
+        },
+        "started_at": treatment.started_at,
+        "finished_at": treatment.finished_at,
+        "deleted_at": treatment.deleted_at
+    }
+
+    print(treatment)
+
+    # Convert dictionary to JSON string
+    json_response = json.dumps(treatment_dict)
+
+    return json_response
+
+@app.route("/v1/instances/create", methods=["GET"])
+def create_instance():
+    return "Not implemented"
+
+@app.route("/v1/instance/tasks/complete", methods=["POST"])
+def complete_task():
+    try:
+        data = request.json
+    except Exception as e:
+        return {"error": "Message is not a JSON string"}
+
+    try:
+        instance_id = data["instance_id"]
+    except Exception as e:
+        return {"error": "Message does not contain instance"}
+    
+    try: 
+        task_ids = data["task_ids"]
+    except Exception as e:
+        return {"error": "Message does not contain tasks"}
+    
+    response, error = api.complete_task(request.headers, instance_id, task_ids)
+    
+    if error != "":
+        return {"error": error}
+
+    else:
+        return response
+
+
+@app.route("/v1/schemas", methods=["GET"])
+def get_schemas():
+    return "Not implemented"
+
+
+@app.route("/v1/schema/update", methods=["GET"])
+def update_schema():
+    return "Not implemented"
+
+@app.route("/v1/schema/create", methods=["GET"])
+def create_schema():
+    return "Not implemented"
+
+
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
