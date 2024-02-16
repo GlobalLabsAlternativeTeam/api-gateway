@@ -306,11 +306,32 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Schema'
-  '/v1/schema':
+  '/v1/schema/update':
     post:
       tags:
         - schemas
-      summary: Create a schema
+      summary: Update a schema
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema'
+      responses:
+        '404':
+          description: No user found
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schema'
+  '/v1/schema/create':
+    post:
+      tags:
+        - schemas
+      summary: Update a schema
       requestBody:
         content:
             application/json:
@@ -365,6 +386,19 @@ components:
             $ref: '#/components/schemas/Task'
         comment:
           type: string
+    SchemaLight:
+      type: object
+      properties:
+        schema_id:
+          type: string
+        author_id:
+          type: integer
+        schema_name:
+          type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
     Schema:
       type: object
       properties:
