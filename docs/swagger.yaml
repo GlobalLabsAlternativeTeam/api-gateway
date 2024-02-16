@@ -132,37 +132,37 @@ paths:
   #           application/json:
   #             schema:
   #                 $ref: '#/components/schemas/TreatmentStatus'
-  # '/v1/instances/create':
-  #   post:
-  #     tags:
-  #       - instances
-  #     summary: Create treatment from the schema
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             type: object
-  #             properties:
-  #               schema_id:
-  #                 type: integer
-  #                 format: int64
-  #               patient_id:
-  #                 type: integer
-  #                 format: int64
-  #               doctor_id:
-  #                 type: integer
-  #                 format: int64
-  #     responses:
-  #       '404':
-  #         description: No user found
-  #       '405':
-  #         description: No instance found
-  #       '200':
-  #         description: Successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #                 $ref: '#/components/schemas/Treatment'
+  '/v1/instances/create':
+    post:
+      tags:
+        - instances
+      summary: Create treatment from the schema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                schema_id:
+                  type: integer
+                  format: int64
+                patient_id:
+                  type: integer
+                  format: int64
+                doctor_id:
+                  type: integer
+                  format: int64
+      responses:
+        '404':
+          description: No user found
+        '405':
+          description: No instance found
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Treatment'
   # '/v1/instance/tasks':
   #   get:
   #     tags:
@@ -253,59 +253,80 @@ paths:
   #           application/json:
   #             schema:
   #                 $ref: '#/components/schemas/TaskStatus'
-  # '/v1/instance/tasks/complete':
-  #   post:
-  #     tags:
-  #       - tasks
-  #     summary: Complete the Task in the treatment
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             type: object
-  #             properties:
-  #               instance_id:
-  #                 type: string
-  #               task_ids:
-  #                 type: array
-  #                 items:
-  #                   type: integer
-  #                   format: int64
-  #     responses:
-  #       '404':
-  #         description: No user found
-  #       '405':
-  #         description: No instance/task found
-  #       '200':
-  #         description: Successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 type: object
-  #                 properties:
-  #                   task_id:
-  #                     type: integer
-  #                     format: int64
-  #                   task_status:
-  #                     $ref: '#/components/schemas/TaskStatus'
-  # '/v1/schemas':
-  #   get:
-  #     tags:
-  #       - schemas
-  #     summary: Get all the available schemas
-  #     responses:
-  #       '404':
-  #         description: No user found
-  #       '200':
-  #         description: Successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: '#/components/schemas/Schema'
+  '/v1/instance/tasks/complete':
+    post:
+      tags:
+        - tasks
+      summary: Complete the Task in the treatment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                instance_id:
+                  type: string
+                task_ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: int64
+      responses:
+        '404':
+          description: No user found
+        '405':
+          description: No instance/task found
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    task_id:
+                      type: integer
+                      format: int64
+                    task_status:
+                      $ref: '#/components/schemas/TaskStatus'
+  '/v1/schemas':
+    get:
+      tags:
+        - schemas
+      summary: Get all the available schemas
+      responses:
+        '404':
+          description: No user found
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schema'
+  '/v1/schema':
+    post:
+      tags:
+        - schemas
+      summary: Create a schema
+      requestBody:
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schema'
+      responses:
+        '404':
+          description: No user found
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schema'
 components:
   schemas:
     TaskStatus:
@@ -338,7 +359,7 @@ components:
         time_limit:
           type: integer
           format: int64
-        children:
+        childrens:
           type: array
           items:
             $ref: '#/components/schemas/Task'
