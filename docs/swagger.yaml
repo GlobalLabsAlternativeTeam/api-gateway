@@ -306,6 +306,29 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Schema'
+  '/v1/schemas/{schema_id}':
+    get:
+      tags:
+        - schemas
+      summary: Get the schema by ID
+      parameters: 
+        - name: schema_id
+          in: path
+          description: ID of the schema 
+          required: true
+          schema:
+            type: string
+      responses:
+        '404':
+          description: No user found
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schema'
   '/v1/schema/update':
     post:
       tags:
@@ -331,7 +354,7 @@ paths:
     post:
       tags:
         - schemas
-      summary: Update a schema
+      summary: Create a schema
       requestBody:
         content:
             application/json:

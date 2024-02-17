@@ -3,6 +3,7 @@ from models.types.pattern_instance import PatternInstance
 from models.types.task import Task
 from models.types.treatment import Treatment
 from models.types.treatment_light import TreatmentLight
+from models.types.task_light import TaskLight
 from service.instance import Instance
 from google.protobuf.json_format import MessageToDict
 
@@ -16,7 +17,7 @@ class API():
         
         response = instance.GetPatients(doctor_id)
         response_dict = MessageToDict(response)
-        patients_array = response_dict['patients']
+        patients_array = response_dict['patient_ids']
 
         print("END get_patients API")
         return patients_array
@@ -47,17 +48,22 @@ class API():
         instance = Instance()
         
         response = instance.GetInstance(instance_id)
+        print(response)
+        
         response_dict = MessageToDict(response)
         treatment_data = response_dict['treatment']
+
 
         pattern_instance_data = treatment_data['patternInstance']
 
         tasks_data = pattern_instance_data.get('tasks', [])
 
-
+        print(tasks_data)
 
         tasks = []
         for task_data in tasks_data:
+            print(task_data)
+            
             task = Task(
                 id=task_data['id'],
                 level=task_data.get('level'),
@@ -97,3 +103,25 @@ class API():
         print("END get_instances API")
         return treatment
         
+    def complete_task(self, context, instance_id, task_ids):
+        print("START complete_task API")
+        instance = Instance()
+        response = instance.CompleteTasks(instance_id, task_ids)
+        response_dict = MessageToDict(response)
+        tasks_array = response_dict.get('tasks_light')
+
+        task_lights = []
+        for task_light_dict in tasks_array:
+            task_light = TaskLight(
+                id = task_light_dict["id"],
+                status = task_light_dict["status"]
+            )
+            task_lights.append(task_light)
+        print("END complete_task API")
+        return task_lights, None
+    
+
+    def create_instance(context, schema_id, patient_id, doctor_id):
+        # 1 get schema
+        # Create instance
+        return "Not implemented", None

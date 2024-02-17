@@ -42,9 +42,9 @@ def get_instances(patient_id):
     }
 
     return jsonify(json_response)
+
+
 # Get the full treatment
-
-
 @app.route("/v1/instance/", methods=['GET'])
 def get_instance():
     instance_id = request.args.get('id')
@@ -88,12 +88,81 @@ def get_instance():
         "deleted_at": treatment.deleted_at
     }
 
-    print(treatment)
+    # Convert dictionary to JSON
+    return jsonify(treatment_dict)
 
-    # Convert dictionary to JSON string
-    json_response = json.dumps(treatment_dict)
+@app.route("/v1/instances/create", methods=["POST"])
+def create_instance():
+    try: 
+         data = request.json
+    except Exception as e:
+        return {"error": "Message is not a JSON string"}
+    try:
+        schema_id = data["schema_id"]
+    except Exception as e:
+        return {"error": "Message does not contain schema_id"}
+    
+    try: 
+        patient_id = data["patient_id"]
+    except Exception as e:
+        return {"error": "Message does not contain patient_id"}
+    
+    try: 
+        doctor_id = data["doctor_id"]
+    except Exception as e:
+        return {"error": "Message does not contain doctor_id"}
+    
+    response, error = api.create_instance(request.headers, schema_id, patient_id, doctor_id)
+    if error != "":
+        return {"error": error}
 
-    return json_response
+    else:
+        return response
+
+@app.route("/v1/instance/tasks/complete", methods=["POST"])
+def complete_task():
+    try:
+        data = request.json
+    except Exception as e:
+        return {"error": "Message is not a JSON string"}
+
+    try:
+        instance_id = data["instance_id"]
+    except Exception as e:
+        return {"error": "Message does not contain instance"}
+    
+    try: 
+        task_ids = data["task_ids"]
+    except Exception as e:
+        return {"error": "Message does not contain tasks"}
+    
+    response, error = api.complete_task(request.headers, instance_id, task_ids)
+    
+    if error != "":
+        return {"error": error}
+
+    else:
+        return response
+
+
+@app.route("/v1/schemas", methods=["GET"])
+def get_schemas():
+    return "Not implemented"
+
+@app.route("/v1/schema/<schema_id>", methods=["GET"])
+def get_schema(schema_id):
+    print(schema_id)
+    return "Not implemented"
+
+
+
+@app.route("/v1/schema/update", methods=["GET"])
+def update_schema():
+    return "Not implemented"
+
+@app.route("/v1/schema/create", methods=["GET"])
+def create_schema():
+    return "Not implemented"
 
 
 

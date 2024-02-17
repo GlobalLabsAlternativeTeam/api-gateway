@@ -23,27 +23,26 @@ class Instance(InstaceInterface):
         print("START GetInstance Instance")
         request = service_pb2.GetTreatmentByIDRequest(treatment_id = instance_id)
         response = self.execution_service_stub.GetTreatmentByID(request)
-        print("START GetInstance Instance")
+        print("END GetInstance Instance")
         return response
 
     def GetPatients(self, context, doctor_id):
         print("START GetPatients Instance")
         request = service_pb2.GetPatientsByDoctorIDRequest(doctor_id = doctor_id)
         response = self.execution_service_stub.GetPatientsByDoctorID(request)
-        print("START GetPatients Instance")
+        print("END GetPatients Instance")
         return response
         
-    def GetInstaceStatus(self, context, instance_id):
-        pass
-
-    def GetTask(self, context, instance_id, task_id):
-        pass
-
-    def IfTaskIsLocked(self, context, instance_id, task_id):
-        pass
-
-    def GetTaskStatus(self, context, instance_id, task_id):
-        pass
-
-    def CreateInstance(self, context, schema, patient_id, doctor_id):
-        pass
+    def CompleteTasks(self, instance_id, task_ids):
+        print("START CompleteTasks Instance")
+        request = service_pb2.CompleteTasksRequest(instance_id = instance_id, task_ids = task_ids)
+        response = self.execution_service_stub.CompleteTasks(request)
+        print("END CompleteTasks Instance")
+        return response
+    
+    def CreateInstance(self, schema, patient_id, doctor_id):
+        print("START CreateInstance Instance")
+        request = service_pb2.CreateInstanceRequest(schema = schema, patient_id = patient_id, doctor_id = doctor_id)
+        response = self.execution_service_stub.CreateInstance(request)
+        print("END CreateInstance Instance")
+        return response
