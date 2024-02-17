@@ -10,7 +10,7 @@ api = API()
 @app.route("/v1/users/patients/<doctor_id>", methods=['GET'])
 def get_patients(doctor_id):
     # doctor_id = request.args.get('doctor_id')
-    
+
     # Get the response from the API
     response = api.get_patients(request.headers, doctor_id)
 

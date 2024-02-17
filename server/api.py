@@ -14,10 +14,10 @@ class API():
     def get_patients(self, context, doctor_id):
         print("START get_patients API")
         instance = Instance()
-        
+
         response = instance.GetPatients(doctor_id)
         response_dict = MessageToDict(response)
-        patients_array = response_dict['patient_ids']
+        patients_array = response_dict.get('patientIds', [])
 
         print("END get_patients API")
         return patients_array
@@ -28,7 +28,7 @@ class API():
         
         response = instance.GetInstances(patient_id)
         response_dict = MessageToDict(response)
-        treatments_array =  response_dict['treatmentLight']
+        treatments_array = response_dict.get('treatmentLight', [])
         
         treatment_lights = []
         for treatment_light_dict in treatments_array:
@@ -48,12 +48,8 @@ class API():
         instance = Instance()
         
         response = instance.GetInstance(instance_id)
-        print(response)
-        
         response_dict = MessageToDict(response)
         treatment_data = response_dict['treatment']
-
-
         pattern_instance_data = treatment_data['patternInstance']
 
         tasks_data = pattern_instance_data.get('tasks', [])
