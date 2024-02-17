@@ -310,7 +310,7 @@ paths:
     get:
       tags:
         - schemas
-      summary: Get all the available schemas
+      summary: Get the schema by ID
       parameters: 
         - name: schema_id
           in: path
