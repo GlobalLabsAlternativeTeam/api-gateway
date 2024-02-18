@@ -49,7 +49,6 @@ class Schema(SchemaInterface):
         request = schema_service_pb2.CreateSchemaRequest(author_id = author_id,
                                                          schema_name = schema_name,
                                                          tasks = grpc_tasks)
-        print(request)
         try:
             response = self.schema_service_stub.CreateSchema(request)
             print("END GetSchema Schema")

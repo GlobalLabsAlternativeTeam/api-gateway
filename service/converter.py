@@ -20,6 +20,5 @@ def TaskToGrpc(tasks):
             comment=task_data['comment']
         )
         grpc_tasks.append(task)
-    print(grpc_tasks)
     return grpc_tasks
 
