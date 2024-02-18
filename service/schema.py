@@ -51,7 +51,7 @@ class Schema(SchemaInterface):
                                                          tasks = grpc_tasks)
         try:
             response = self.schema_service_stub.CreateSchema(request)
-            print("END GetSchema Schema")
+            print("END CreateSchema Schema")
             return {"schema" : response,
                     "error": ""
                     }
