@@ -2,7 +2,7 @@ import grpc
 
 import vars
 from interfaces.instance import InstaceInterface
-
+import service.execution_service_converter as converter
 # from grpc.process_execution_service import service__pb2_grpc, service__pb2
 from proto.process_execution_service import service_pb2, service_pb2_grpc
 
@@ -40,9 +40,30 @@ class Instance(InstaceInterface):
         print("END CompleteTasks Instance")
         return response
     
-    def CreateInstance(self, schema, patient_id, doctor_id):
-        print("START CreateInstance Instance")
-        request = service_pb2.CreateInstanceRequest(schema = schema, patient_id = patient_id, doctor_id = doctor_id)
-        response = self.execution_service_stub.CreateInstance(request)
-        print("END CreateInstance Instance")
-        return response
+    def CreateTreatment(self, schema, patient_id, doctor_id):
+        print("START CreateTreatment Instance")
+        grpc_schema = converter.SchemaToGrpc(schema)
+        request = service_pb2.CreateTreatmentRequest(schema = grpc_schema, patient_id = patient_id, doctor_id = doctor_id)
+
+        try:
+            response = self.execution_service_stub.CreateTreatment(request)
+            print("END CreateTreatment Schema")
+            return {"treatment" : response,
+                    "error": ""
+                    }
+            
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"treatment" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"treatment" : '',
+                    "error": e
+                    }

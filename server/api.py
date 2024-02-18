@@ -117,10 +117,22 @@ class API():
         print("END complete_task API")
         return task_lights, None
     
-    def create_instance(context, schema_id, patient_id, doctor_id):
+    def create_treatment(self, context, schema_id, patient_id, doctor_id):
         # 1 get schema
-        # Create instance
-        return "Not implemented", None
+        schema, error = self.get_schema(context, schema_id)
+        if error != None:
+            return None, error
+        else: 
+            instance = Instance()
+            response = instance.CreateTreatment(schema, patient_id, doctor_id)
+            response_treatment = response.get('treatment')
+            response_error = response.get('error')
+            if response_error != '':
+                return None, response_error
+            else:
+                treatment_dict = MessageToDict(response_treatment)
+                treatment = treatment_dict.get('treatment', '')
+                return treatment, None
     
 
     def get_schema(self, context, schema_id):
@@ -130,14 +142,15 @@ class API():
         response = schema.GetSchema(context, schema_id)
         response_schema = response.get('schema')
         response_error = response.get('error')
+        print(response_schema)
 
         print("END get_schema API")
         if response_error != '':
-            return response_error
+            return None, response_error
         else:
             schema_dict = MessageToDict(response_schema)
             schema = schema_dict.get('schema', '')
-            return schema
+            return schema, None
         
 
     def create_schema(self, context, tasks, author_id, schema_name):

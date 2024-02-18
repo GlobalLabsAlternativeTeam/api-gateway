@@ -13,7 +13,7 @@ service ProcessExecutionService{
     rpc GetTreatmentByID(GetTreatmentByIDRequest) returns (GetTreatmentByIDResponse);
     rpc GetPatientsByDoctorID(GetPatientsByDoctorIDRequest) returns (GetPatientsByDoctorIDResponse);
     rpc CompleteTasks(CompleteTasksRequest) returns (CompleteTasksResponse);
-    rpc CreateInstance(CreateInstanceRequest) returns (CreateInstanceResponse);
+    rpc CreateTreatment(CreateTreatmentRequest) returns (CreateTreatmentResponse);
 }
 
 message GetTreatmentsByPatientIDRequest{
@@ -60,13 +60,13 @@ message CompleteTasksResponse{
 }
 
 
-message CreateInstanceRequest{
+message CreateTreatmentRequest{
     Schema schema = 1;
     string patient_id = 2;
     string doctor_id = 3;
 }
 
-message CreateInstanceResponse{
+message CreateTreatmentResponse{
     Treatment treatment = 1;
 }
 
@@ -134,7 +134,7 @@ enum PatternInstanceStatus {
 }
 
 message Schema{
-    int64 schema_id = 1;
+    string schema_id = 1;
     string author_id = 2;
     string schema_name = 3;
     google.protobuf.Timestamp created_at = 4;

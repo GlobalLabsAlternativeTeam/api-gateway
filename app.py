@@ -112,12 +112,12 @@ def create_instance():
     except Exception as e:
         return {"error": "Message does not contain doctor_id"}
     
-    response, error = api.create_instance(request.headers, schema_id, patient_id, doctor_id)
-    if error != "":
-        return {"error": error}
+    response, error = api.create_treatment(request.headers, schema_id, patient_id, doctor_id)
+    if error != None:
+         return jsonify(error)
 
     else:
-        return response
+        return jsonify(response)
 
 @app.route("/v1/instance/tasks/complete", methods=["POST"])
 def complete_task():
@@ -152,8 +152,12 @@ def get_schemas():
 @app.route("/v1/schema/<schema_id>", methods=["GET"])
 def get_schema(schema_id):
     
-    response = api.get_schema(request.headers, schema_id)
-    return jsonify(response)
+    response, error = api.get_schema(request.headers, schema_id)
+
+    if error != None:
+        return jsonify(error)
+    else:
+        return jsonify(response)
     # return "Not implemented"
 
 

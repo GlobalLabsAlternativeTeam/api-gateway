@@ -1,7 +1,7 @@
 import grpc
 
 import vars
-import service.converter as converter
+import service.schema_service_converter as converter
 from interfaces.schema import SchemaInterface
 
 from proto.schema_service import schema_service_pb2, schema_service_pb2_grpc
@@ -44,7 +44,10 @@ class Schema(SchemaInterface):
     
     def CreateSchema(self, context, tasks, author_id, schema_name):
         print("START CreateSchema Schema")
-        grpc_tasks = converter.TaskToGrpc(tasks)
+        grpc_tasks = []
+        for task in tasks:
+            grpc_tasks.append(converter.TaskToGrpc(task))
+
         # TODO: Validate Task schema
         request = schema_service_pb2.CreateSchemaRequest(author_id = author_id,
                                                          schema_name = schema_name,

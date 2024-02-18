@@ -34,6 +34,11 @@ class ProcessExecutionServiceStub(object):
                 request_serializer=proto_dot_process__execution__service_dot_service__pb2.CompleteTasksRequest.SerializeToString,
                 response_deserializer=proto_dot_process__execution__service_dot_service__pb2.CompleteTasksResponse.FromString,
                 )
+        self.CreateTreatment = channel.unary_unary(
+                '/alt_team.process_execution_service.ProcessExecutionService/CreateTreatment',
+                request_serializer=proto_dot_process__execution__service_dot_service__pb2.CreateTreatmentRequest.SerializeToString,
+                response_deserializer=proto_dot_process__execution__service_dot_service__pb2.CreateTreatmentResponse.FromString,
+                )
 
 
 class ProcessExecutionServiceServicer(object):
@@ -63,6 +68,12 @@ class ProcessExecutionServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CreateTreatment(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProcessExecutionServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -85,6 +96,11 @@ def add_ProcessExecutionServiceServicer_to_server(servicer, server):
                     servicer.CompleteTasks,
                     request_deserializer=proto_dot_process__execution__service_dot_service__pb2.CompleteTasksRequest.FromString,
                     response_serializer=proto_dot_process__execution__service_dot_service__pb2.CompleteTasksResponse.SerializeToString,
+            ),
+            'CreateTreatment': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateTreatment,
+                    request_deserializer=proto_dot_process__execution__service_dot_service__pb2.CreateTreatmentRequest.FromString,
+                    response_serializer=proto_dot_process__execution__service_dot_service__pb2.CreateTreatmentResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -161,5 +177,22 @@ class ProcessExecutionService(object):
         return grpc.experimental.unary_unary(request, target, '/alt_team.process_execution_service.ProcessExecutionService/CompleteTasks',
             proto_dot_process__execution__service_dot_service__pb2.CompleteTasksRequest.SerializeToString,
             proto_dot_process__execution__service_dot_service__pb2.CompleteTasksResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CreateTreatment(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/alt_team.process_execution_service.ProcessExecutionService/CreateTreatment',
+            proto_dot_process__execution__service_dot_service__pb2.CreateTreatmentRequest.SerializeToString,
+            proto_dot_process__execution__service_dot_service__pb2.CreateTreatmentResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

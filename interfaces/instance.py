@@ -23,5 +23,5 @@ class InstaceInterface(ABC):
         pass
 
     @abstractmethod
-    def CreateInstance(self, schema, patient_id, doctor_id):
+    def CreateTreatment(self, schema, patient_id, doctor_id):
         pass
