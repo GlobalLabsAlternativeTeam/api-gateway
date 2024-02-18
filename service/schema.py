@@ -14,7 +14,6 @@ class Schema(SchemaInterface):
     def GetSchema(self, context, schema_id):
         print("START GetSchema Schema")
         request = schema_service_pb2.GetSchemaByIDRequest(schema_id = schema_id)
-        # response = self.schema_service_stub.GetSchemaByID(request)
         try:
             response = self.schema_service_stub.GetSchemaByID(request)
             print("END GetSchema Schema")
