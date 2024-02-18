@@ -359,7 +359,7 @@ paths:
         content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Schema'
+                $ref: '#/components/schemas/SchemaLight'
       responses:
         '404':
           description: No user found
@@ -412,9 +412,9 @@ components:
     SchemaLight:
       type: object
       properties:
-        schema_id:
-          type: string
         author_id:
+          type: integer
+        doctor_id:
           type: integer
         schema_name:
           type: string

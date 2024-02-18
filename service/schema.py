@@ -1,6 +1,7 @@
 import grpc
 
 import vars
+import service.converter as converter
 from interfaces.schema import SchemaInterface
 
 from proto.schema_service import schema_service_pb2, schema_service_pb2_grpc
@@ -37,14 +38,40 @@ class Schema(SchemaInterface):
                     "error": e
                     }
         
-        
-    
 
     def GetSchemas(self, context):
         return super().GetSchemas(context)
     
-    def CreateSchema(self, context, schema):
-        return super().CreateSchema(context, schema)
+    def CreateSchema(self, context, tasks, author_id, schema_name):
+        print("START CreateSchema Schema")
+        grpc_tasks = converter.TaskToGrpc(tasks)
+        # TODO: Validate Task schema
+        request = schema_service_pb2.CreateSchemaRequest(author_id = author_id,
+                                                         schema_name = schema_name,
+                                                         tasks = grpc_tasks)
+        print(request)
+        try:
+            response = self.schema_service_stub.CreateSchema(request)
+            print("END GetSchema Schema")
+            return {"schema" : response,
+                    "error": ""
+                    }
+            
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"schema" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"schema" : '',
+                    "error": e
+                    }
     
     def UpdateSchema(self, context, schema):
         return super().UpdateSchema(context, schema)

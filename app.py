@@ -162,9 +162,29 @@ def get_schema(schema_id):
 def update_schema():
     return "Not implemented"
 
-@app.route("/v1/schema/create", methods=["GET"])
+@app.route("/v1/schema/create", methods=["POST"])
 def create_schema():
-    return "Not implemented"
+    try: 
+         data = request.json
+    except Exception as e:
+        return {"error": "Message is not a JSON string"}
+    try:
+        doctor_id = data["doctor_id"]
+    except Exception as e:
+        return {"error": "Message does not contain doctor_id"}
+    
+    try: 
+        schema_name = data["schema_name"]
+    except Exception as e:
+        return {"error": "Message does not contain schema_name"}
+    
+    try: 
+        tasks = data["tasks"]
+    except Exception as e:
+        return {"error": "Message does not contain tasks"}
+    
+    response = api.create_schema(request.headers, tasks, doctor_id, schema_name)
+    return jsonify(response)
 
 
 

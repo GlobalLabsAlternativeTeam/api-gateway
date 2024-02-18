@@ -138,3 +138,23 @@ class API():
             schema_dict = MessageToDict(response_schema)
             schema = schema_dict.get('schema', '')
             return schema
+        
+
+    def create_schema(self, context, tasks, author_id, schema_name):
+        print("START create_schema API")
+        
+        schema = Schema()
+
+        # author_id = request.get('author_id'
+        response = schema.CreateSchema(context, tasks, author_id, schema_name)
+        response_schema = response.get('schema')
+        response_error = response.get('error')
+
+
+        print("END create_schema API")
+        if response_error != '':
+            return response_error
+        else:
+            schema_dict = MessageToDict(response_schema)
+            schema = schema_dict.get('schema', '')
+            return schema
