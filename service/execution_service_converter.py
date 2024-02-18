@@ -36,7 +36,6 @@ def TaskToGrpc(task_data):
         comment_value = StringValue(value=comment)
         children = task_data.get('children', [])
         grpc_children = [TaskToGrpc(task) for task in children]
-        print(task_data)
         task = service_pb2.Task(
             id=int(task_data.get('id', '0')),
             level=int(task_data.get('level', '0')),

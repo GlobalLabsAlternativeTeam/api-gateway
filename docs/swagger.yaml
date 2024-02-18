@@ -144,14 +144,11 @@ paths:
               type: object
               properties:
                 schema_id:
-                  type: integer
-                  format: int64
+                  type: string
                 patient_id:
-                  type: integer
-                  format: int64
+                  type: string
                 doctor_id:
-                  type: integer
-                  format: int64
+                  type: string
       responses:
         '404':
           description: No user found
@@ -413,9 +410,9 @@ components:
       type: object
       properties:
         author_id:
-          type: integer
+          type: string
         doctor_id:
-          type: integer
+          type: string
         schema_name:
           type: string
         tasks:
