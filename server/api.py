@@ -5,6 +5,7 @@ from models.types.treatment import Treatment
 from models.types.treatment_light import TreatmentLight
 from models.types.task_light import TaskLight
 from service.instance import Instance
+from service.schema import Schema
 from google.protobuf.json_format import MessageToDict
 
 class API():
@@ -116,8 +117,24 @@ class API():
         print("END complete_task API")
         return task_lights, None
     
-
     def create_instance(context, schema_id, patient_id, doctor_id):
         # 1 get schema
         # Create instance
         return "Not implemented", None
+    
+
+    def get_schema(self, context, schema_id):
+        print("START get_schema API")
+        schema = Schema()
+
+        response = schema.GetSchema(context, schema_id)
+        response_schema = response.get('schema')
+        response_error = response.get('error')
+
+        print("END get_schema API")
+        if response_error != '':
+            return response_error
+        else:
+            schema_dict = MessageToDict(response_schema)
+            schema = schema_dict.get('schema', '')
+            return schema

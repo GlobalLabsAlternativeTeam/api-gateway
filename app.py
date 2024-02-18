@@ -151,8 +151,10 @@ def get_schemas():
 
 @app.route("/v1/schema/<schema_id>", methods=["GET"])
 def get_schema(schema_id):
-    print(schema_id)
-    return "Not implemented"
+    
+    response = api.get_schema(request.headers, schema_id)
+    return jsonify(response)
+    # return "Not implemented"
 
 
 
