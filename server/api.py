@@ -65,12 +65,12 @@ class API():
                 id=task_data['id'],
                 level=task_data.get('level'),
                 name=task_data['name'],
-                status=task_data['status'],
+                status=task_data.get('status', 'PATTERN_INSTANCE_STATUS_UNSPECIFIED'),
                 blockedBy=task_data.get('blockedBy', []),
-                responsible=task_data['responsible'],
-                timeLimit=task_data['timeLimit'],
+                responsible=task_data.get('responsible', ''),
+                timeLimit=task_data.get('timeLimit', 0),
                 children=[Task(**child) for child in task_data.get('children', [])],
-                comment=task_data.get('comment')
+                comment=task_data.get('comment', '')
             )
             tasks.append(task)
         
