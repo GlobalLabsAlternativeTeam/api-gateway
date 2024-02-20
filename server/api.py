@@ -18,8 +18,8 @@ class API():
 
         response = instance.GetPatients(doctor_id)
         response_dict = MessageToDict(response)
-        patients_array = response_dict.get('patientIds', [])
-
+        patients_array = list(set(response_dict.get('patientIds', [])))
+        
         print("END get_patients API")
         return patients_array
 
