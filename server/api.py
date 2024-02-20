@@ -105,8 +105,11 @@ class API():
         instance = Instance()
         response = instance.CompleteTasks(instance_id, task_ids)
         response_dict = MessageToDict(response)
-        tasks_array = response_dict.get('tasks_light')
-
+        tasks_array = response_dict.get('tasks_light', [])
+        
+        if not tasks_array:
+            return [], "Instance not found"
+        
         task_lights = []
         for task_light_dict in tasks_array:
             task_light = TaskLight(

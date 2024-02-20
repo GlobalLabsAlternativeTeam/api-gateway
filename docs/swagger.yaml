@@ -14,18 +14,24 @@ paths:
     get:
       tags:
         - patients
-      summary: Get all patients
+      summary: Get all patients of the doctor
+      description: | 
+        Returns ids of all the patients, who have treatment(s) conducting by the given doctor.
+        
+        If there is more than one traetment for the one given patient- id is returned only ones.
+        
+        Method is being proxied to process_execution_service
       parameters:
         - name: doctor_id
           in: path
-          description: ID of the patient
+          description: ID of the doctor
           required: true
           schema:
             type: string
       operationId: getAllPatients
       responses:
         '404':
-          description: No user found
+          description: No doctor found
         '200':
           description: Successful operation
           content:
@@ -62,6 +68,12 @@ paths:
       tags:
         - instances
       summary: Get all running treatment instances of the patient
+      description: |
+        Method return short info about all the treatments of the given patient
+        
+        Different patients cannot have the same treatment ID
+      
+        Method is being proxied to process_execution_service
       parameters: 
         - name: patient_id
           in: path
@@ -72,7 +84,7 @@ paths:
       operationId: getPatientTreatments
       responses:
         '404':
-          description: No user found
+          description: No patient found
         '200':
           description: Successful operation
           content:
@@ -91,6 +103,10 @@ paths:
       tags:
         - instances
       summary: Get running instance by ID
+      description: |
+        Method return the full treatment object
+        
+        Method is being proxied to process_execution_service
       parameters:
         - name: id
           in: path
@@ -100,8 +116,6 @@ paths:
             type: string
       responses:
         '404':
-          description: No user found
-        '405':
           description: No instance found
         '200':
           description: Successful operation
@@ -137,6 +151,10 @@ paths:
       tags:
         - instances
       summary: Create treatment from the schema
+      description: |
+        Method gets schema from schema_service
+        
+        Then goes to process_execution_service
       requestBody:
         content:
           application/json:
@@ -151,9 +169,7 @@ paths:
                   type: string
       responses:
         '404':
-          description: No user found
-        '405':
-          description: No instance found
+          description: No schema found
         '200':
           description: Successful operation
           content:
@@ -270,9 +286,7 @@ paths:
                     format: int64
       responses:
         '404':
-          description: No user found
-        '405':
-          description: No instance/task found
+          description: No instance found
         '200':
           description: Successful operation
           content:
@@ -308,6 +322,8 @@ paths:
       tags:
         - schemas
       summary: Get the schema by ID
+      description: |
+        Return schema from schema_service by ID
       parameters: 
         - name: schema_id
           in: path
@@ -317,7 +333,7 @@ paths:
             type: string
       responses:
         '404':
-          description: No user found
+          description: No schema found
         '200':
           description: Successful operation
           content:
@@ -331,6 +347,12 @@ paths:
       tags:
         - schemas
       summary: Update a schema
+      description: |
+        This method udpates a schema by id
+        
+        Returns full schema object
+        
+        Method is proxied to schema_service
       requestBody:
         content:
             application/json:
@@ -352,6 +374,14 @@ paths:
       tags:
         - schemas
       summary: Create a schema
+      description: | 
+        This method creates a schema
+        
+        IDs for each task should be generated at frontend
+        
+        Returns full schema object
+        
+        Method is proxied to schema_service
       requestBody:
         content:
             application/json:
@@ -517,12 +547,16 @@ components:
       properties:
         treatment_id:
           type: string
+          description: Treatment ID
         treatment_name:
           type: string
+          description: Treatment Name
         status:
           $ref: '#/components/schemas/TreatmentStatus'
+          description: Treatment Stats
         treatment_progress:
           type: number
+          description: Process of the treatment completion
         
         
             

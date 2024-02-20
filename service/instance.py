@@ -37,6 +37,7 @@ class Instance(InstaceInterface):
         print("START CompleteTasks Instance")
         request = service_pb2.CompleteTasksRequest(instance_id = instance_id, task_ids = task_ids)
         response = self.execution_service_stub.CompleteTasks(request)
+        print(f'''Response : {response}''')
         print("END CompleteTasks Instance")
         return response
     

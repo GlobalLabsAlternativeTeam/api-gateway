@@ -2,6 +2,7 @@ import json
 from flask import Flask, jsonify
 from flask import request
 from server.api import API
+from flask_api import status
 
 app = Flask(__name__)
 api = API()
@@ -96,21 +97,21 @@ def create_instance():
     try: 
          data = request.json
     except Exception as e:
-        return {"error": "Message is not a JSON string"}
+        return {"error": "Message is not a JSON string"}, 400
     try:
         schema_id = data["schema_id"]
     except Exception as e:
-        return {"error": "Message does not contain schema_id"}
+        return {"error": "Message does not contain schema_id"}, 400
     
     try: 
         patient_id = data["patient_id"]
     except Exception as e:
-        return {"error": "Message does not contain patient_id"}
+        return {"error": "Message does not contain patient_id"}, 400
     
     try: 
         doctor_id = data["doctor_id"]
     except Exception as e:
-        return {"error": "Message does not contain doctor_id"}
+        return {"error": "Message does not contain doctor_id"}, 400
     
     response, error = api.create_treatment(request.headers, schema_id, patient_id, doctor_id)
     if error != None:
@@ -124,25 +125,26 @@ def complete_task():
     try:
         data = request.json
     except Exception as e:
-        return {"error": "Message is not a JSON string"}
+        return {"error": "Message is not a JSON string"}, 400
 
     try:
         instance_id = data["instance_id"]
     except Exception as e:
-        return {"error": "Message does not contain instance"}
+        return {"error": "Message does not contain instance"}, 400
     
     try: 
         task_ids = data["task_ids"]
     except Exception as e:
-        return {"error": "Message does not contain tasks"}
+        return {"error": "Message does not contain tasks"}, 400
     
     response, error = api.complete_task(request.headers, instance_id, task_ids)
     
     if error != "":
-        return {"error": error}
+        response = {"error": error}
+        return response, 404
 
     else:
-        return response
+        return response, 200
 
 
 @app.route("/v1/schemas", methods=["GET"])
@@ -155,7 +157,7 @@ def get_schema(schema_id):
     response, error = api.get_schema(request.headers, schema_id)
 
     if error != None:
-        return jsonify(error)
+        return jsonify(error), 404
     else:
         return jsonify(response)
     # return "Not implemented"
@@ -171,21 +173,21 @@ def create_schema():
     try: 
          data = request.json
     except Exception as e:
-        return {"error": "Message is not a JSON string"}
+        return {"error": "Message is not a JSON string"}, 400
     try:
         doctor_id = data["doctor_id"]
     except Exception as e:
-        return {"error": "Message does not contain doctor_id"}
+        return {"error": "Message does not contain doctor_id"}, 400
     
     try: 
         schema_name = data["schema_name"]
     except Exception as e:
-        return {"error": "Message does not contain schema_name"}
+        return {"error": "Message does not contain schema_name"}, 400
     
     try: 
         tasks = data["tasks"]
     except Exception as e:
-        return {"error": "Message does not contain tasks"}
+        return {"error": "Message does not contain tasks"}, 400
     
     response = api.create_schema(request.headers, tasks, doctor_id, schema_name)
     return jsonify(response)
