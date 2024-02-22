@@ -17,18 +17,31 @@ class API():
         instance = Instance()
 
         response = instance.GetPatients(doctor_id)
-        response_dict = MessageToDict(response)
+        response_patients = response.get('patients','')
+        response_error = response.get('error',"None")
+
+        if response_error!=None:
+            return None, response_error
+        
+
+        response_dict = MessageToDict(response_patients)
         patients_array = list(set(response_dict.get('patientIds', [])))
         
         print("END get_patients API")
-        return patients_array
+        return patients_array, None
 
     def get_instances(self, context, patient_id):
         print("START get_instances API")
         instance = Instance()
         
         response = instance.GetInstances(patient_id)
-        response_dict = MessageToDict(response)
+        response_instances = response.get('instances','')
+        response_error = response.get('error',None)
+
+        if response_error!=None:
+            return None, response_error
+        
+        response_dict = MessageToDict(response_instances)
         treatments_array = response_dict.get('treatmentLight', [])
         
         treatment_lights = []
@@ -49,17 +62,18 @@ class API():
         instance = Instance()
         
         response = instance.GetInstance(instance_id)
-        response_dict = MessageToDict(response)
-        treatment_data = response_dict['treatment']
-        pattern_instance_data = treatment_data['patternInstance']
+        response_instance = response.get('instance', '')
+        response_error = response.get("error", None)
+        if response_error != None:
+            return None, response_error
+        
+        instance_dict = MessageToDict(response_instance)['treatment']
+        pattern_instance_data = instance_dict['patternInstance']
 
         tasks_data = pattern_instance_data.get('tasks', [])
 
-        print(tasks_data)
-
         tasks = []
         for task_data in tasks_data:
-            print(task_data)
             
             task = Task(
                 id=task_data['id'],
@@ -87,24 +101,30 @@ class API():
         )
 
         treatment = Treatment(
-            treatment_id=treatment_data['treatmentId'],
-            doctor_id=treatment_data['doctorId'],
-            patient_id=treatment_data['patientId'],
-            status=treatment_data['status'],
+            treatment_id=instance_dict['treatmentId'],
+            doctor_id=instance_dict['doctorId'],
+            patient_id=instance_dict['patientId'],
+            status=instance_dict['status'],
             pattern_instance=pattern_instance,
-            started_at=treatment_data['startedAt'],
-            finished_at=treatment_data['finishedAt'],
-            deleted_at=treatment_data['deletedAt']
+            started_at=instance_dict['startedAt'],
+            finished_at=instance_dict['finishedAt'],
+            deleted_at=instance_dict['deletedAt']
         )
 
         print("END get_instances API")
-        return treatment
+        return treatment, None
         
     def complete_task(self, context, instance_id, task_ids):
         print("START complete_task API")
         instance = Instance()
         response = instance.CompleteTasks(instance_id, task_ids)
-        response_dict = MessageToDict(response)
+        response_tasks = response.get('tasks', '')
+        response_error = response.get('error', None)
+        
+        if response_error!=None:
+            return [], response_error
+        
+        response_dict = MessageToDict(response_tasks)
         tasks_array = response_dict.get('tasks_light', [])
         
         if not tasks_array:

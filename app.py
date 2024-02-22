@@ -13,18 +13,28 @@ def get_patients(doctor_id):
     # doctor_id = request.args.get('doctor_id')
 
     # Get the response from the API
-    response = api.get_patients(request.headers, doctor_id)
+    response, error = api.get_patients(request.headers, doctor_id)
+
+    if error!=None:
+        response = {"error": error}
+        return response, 404
+
 
     # Return the response as a json object
-    return jsonify(response)
+    return jsonify(response), 200
 
 
 # For the patient_id get all the treatments: ID, name, status, comlete percentage (?)
 @app.route("/v1/instances/<patient_id>", methods=['GET'])
 def get_instances(patient_id):
     # Get the response from the API
-    response = api.get_instances(request.headers, patient_id)
+    response, error  = api.get_instances(request.headers, patient_id)
     
+    if error!=None:
+        response = {"error": error}
+        return response, 404
+    
+
     # Convert TreatmentLight objects to dictionaries
     treatments = []
     for treatment_light in response:
@@ -42,33 +52,33 @@ def get_instances(patient_id):
         "treatments": treatments
     }
 
-    return jsonify(json_response)
+    return jsonify(json_response), 200
 
 
 # Get the full treatment
 @app.route("/v1/instance/", methods=['GET'])
 def get_instance():
     instance_id = request.args.get('id')
-    response = api.get_instance(request.headers, instance_id)
+    response, error = api.get_instance(request.headers, instance_id)
     
-    # Assuming response is a Treatment object
-    treatment = response
-
-    # Convert Treatment object to a dictionary
+    if error != None:
+        response = {"error": error}
+        return response, 404
+    
     treatment_dict = {
-        "treatment_id": treatment.treatment_id,
-        "doctor_id": treatment.doctor_id,
-        "patient_id": treatment.patient_id,
-        "status": treatment.status,
+        "treatment_id": response.treatment_id,
+        "doctor_id": response.doctor_id,
+        "patient_id": response.patient_id,
+        "status": response.status,
         "pattern_instance": {
-            "instance_id": treatment.pattern_instance.instance_id,
-            "status": treatment.pattern_instance.status,
-            "pattern_id": treatment.pattern_instance.pattern_id,
-            "author_id": treatment.pattern_instance.author_id,
-            "pattern_name": treatment.pattern_instance.pattern_name,
-            "created_at": treatment.pattern_instance.created_at,
-            "updated_at": treatment.pattern_instance.updated_at,
-            "deleted_at": treatment.pattern_instance.deleted_at,
+            "instance_id": response.pattern_instance.instance_id,
+            "status": response.pattern_instance.status,
+            "pattern_id": response.pattern_instance.pattern_id,
+            "author_id": response.pattern_instance.author_id,
+            "pattern_name": response.pattern_instance.pattern_name,
+            "created_at": response.pattern_instance.created_at,
+            "updated_at": response.pattern_instance.updated_at,
+            "deleted_at": response.pattern_instance.deleted_at,
             "tasks": [
                 {
                     "id": task.id,
@@ -81,12 +91,12 @@ def get_instance():
                     "children": [child.id for child in task.children],
                     "comment": task.comment
                 }
-                for task in treatment.pattern_instance.tasks
+                for task in response.pattern_instance.tasks
             ]
         },
-        "started_at": treatment.started_at,
-        "finished_at": treatment.finished_at,
-        "deleted_at": treatment.deleted_at
+        "started_at": response.started_at,
+        "finished_at": response.finished_at,
+        "deleted_at": response.deleted_at
     }
 
     # Convert dictionary to JSON

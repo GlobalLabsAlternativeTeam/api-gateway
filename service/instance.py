@@ -15,31 +15,112 @@ class Instance(InstaceInterface):
     def GetInstances(self, patient_id):
         print("START GetInstances Instance")
         request = service_pb2.GetTreatmentsByPatientIDRequest(patient_id = patient_id)
-        response = self.execution_service_stub.GetTreatmentsByPatientID(request)
-        print("END GetInstances Instance")
-        return response
+
+        try: 
+            response = self.execution_service_stub.GetTreatmentsByPatientID(request)
+            print("END GetInstances Instance")
+            return  {"instances" : response,
+                    "error": None
+                    }
+
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"instances" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"instances" : '',
+                    "error": e
+                    }
+
+        
 
     def GetInstance(self, instance_id):
         print("START GetInstance Instance")
         request = service_pb2.GetTreatmentByIDRequest(treatment_id = instance_id)
-        response = self.execution_service_stub.GetTreatmentByID(request)
-        print("END GetInstance Instance")
-        return response
+
+        try: 
+            response = self.execution_service_stub.GetTreatmentByID(request)
+            print("END GetInstance Instance")
+            return  {"instance" : response,
+                    "error": None
+                    }
+
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"instance" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"instance" : '',
+                    "error": e
+                    }
+
 
     def GetPatients(self, doctor_id):
         print("START GetPatients Instance")
         request = service_pb2.GetPatientsByDoctorIDRequest(doctor_id = doctor_id)
-        response = self.execution_service_stub.GetPatientsByDoctorID(request)
-        print("END GetPatients Instance")
-        return response
+
+        try: 
+
+            response = self.execution_service_stub.GetPatientsByDoctorID(request)
+            print("END GetPatients Instance")
+            return   {"patients" : response,
+                    "error": None
+                    }
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"patients" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"instance" : '',
+                    "error": e
+                    }
         
     def CompleteTasks(self, instance_id, task_ids):
         print("START CompleteTasks Instance")
         request = service_pb2.CompleteTasksRequest(instance_id = instance_id, task_ids = task_ids)
-        response = self.execution_service_stub.CompleteTasks(request)
-        print(f'''Response : {response}''')
-        print("END CompleteTasks Instance")
-        return response
+        try:
+            response = self.execution_service_stub.CompleteTasks(request)
+            print("END CompleteTasks Instance")
+            return   {"tasks" : response,
+                    "error": None
+                    }
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"tasks" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"tasks" : '',
+                    "error": e
+                    }
+        # return response
     
     def CreateTreatment(self, schema, patient_id, doctor_id):
         print("START CreateTreatment Instance")
@@ -50,7 +131,7 @@ class Instance(InstaceInterface):
             response = self.execution_service_stub.CreateTreatment(request)
             print("END CreateTreatment Schema")
             return {"treatment" : response,
-                    "error": ""
+                    "error": None
                     }
             
         except grpc._channel._InactiveRpcError as e:
