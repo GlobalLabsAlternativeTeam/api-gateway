@@ -28,6 +28,7 @@ To do this, run the following command from the root directory:
 
 ```bash
 python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. proto/process_execution_service/service.proto
+python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. proto/schema_service/schema_service.proto
 ```
 
 ### Running the service

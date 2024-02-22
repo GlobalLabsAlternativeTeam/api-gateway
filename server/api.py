@@ -157,7 +157,6 @@ class API():
                 treatment = treatment_dict.get('treatment', '')
                 return treatment, None
     
-
     def get_schema(self, context, schema_id):
         print("START get_schema API")
         schema = Schema()
@@ -165,7 +164,6 @@ class API():
         response = schema.GetSchema(context, schema_id)
         response_schema = response.get('schema')
         response_error = response.get('error')
-        print(response_schema)
 
         print("END get_schema API")
         if response_error != '':
@@ -175,7 +173,28 @@ class API():
             schema = schema_dict.get('schema', '')
             return schema, None
         
+    def get_schemas(self, context):
+        print("START get_schemas API")
+        schema = Schema()
+        schemas = []
 
+        response = schema.GetSchemas(context)
+        response_schema = response.get('schemas')
+        response_error = response.get('error')
+
+        print("END get_schema API")
+        if response_error != '':
+            return [], response_error
+        else:
+            schema_dict = MessageToDict(response_schema)
+            schemas_grpc = schema_dict.get('schemas', '')
+            for schema_grpc in schemas_grpc:
+                schemas.append(schema_grpc)
+
+
+            return schemas, None
+
+        
     def create_schema(self, context, tasks, author_id, schema_name):
         print("START create_schema API")
         

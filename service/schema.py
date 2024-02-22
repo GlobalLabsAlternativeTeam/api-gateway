@@ -40,8 +40,31 @@ class Schema(SchemaInterface):
         
 
     def GetSchemas(self, context):
-        return super().GetSchemas(context)
-    
+        print("START GetSchemas Schema")
+        request = schema_service_pb2.GetAllSchemasRequest()
+        try:
+            response = self.schema_service_stub.GetAllSchemas(request)
+            print("END GetSchemas Schema")
+            return {"schemas" : response,
+                    "error": ""
+                    }
+            
+        except grpc._channel._InactiveRpcError as e:
+            status_code = e.code()
+            details = e.details()
+            
+            if status_code == grpc.StatusCode.UNKNOWN:
+                # Extracting grpc_message
+                return   {"schemas" : '',
+                    "error": details
+                    }
+            else:
+                # Handle other status codes if needed
+                print("Unexpected gRPC error:", e)
+                return {"schemas" : '',
+                    "error": e
+                    }
+        
     def CreateSchema(self, context, tasks, author_id, schema_name):
         print("START CreateSchema Schema")
         grpc_tasks = []

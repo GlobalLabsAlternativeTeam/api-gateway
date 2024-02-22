@@ -159,7 +159,11 @@ def complete_task():
 
 @app.route("/v1/schemas", methods=["GET"])
 def get_schemas():
-    return "Not implemented"
+    response, error = api.get_schemas(request.headers)
+    if error != None:
+        return jsonify(error), 404
+    else:
+        return jsonify(response)
 
 @app.route("/v1/schema/<schema_id>", methods=["GET"])
 def get_schema(schema_id):

@@ -19,6 +19,11 @@ class SchemaServiceStub(object):
                 request_serializer=proto_dot_schema__service_dot_schema__service__pb2.CreateSchemaRequest.SerializeToString,
                 response_deserializer=proto_dot_schema__service_dot_schema__service__pb2.CreateSchemaResponse.FromString,
                 )
+        self.GetAllSchemas = channel.unary_unary(
+                '/alt_team.schema_service.SchemaService/GetAllSchemas',
+                request_serializer=proto_dot_schema__service_dot_schema__service__pb2.GetAllSchemasRequest.SerializeToString,
+                response_deserializer=proto_dot_schema__service_dot_schema__service__pb2.GetAllSchemasResponse.FromString,
+                )
         self.GetSchemaByID = channel.unary_unary(
                 '/alt_team.schema_service.SchemaService/GetSchemaByID',
                 request_serializer=proto_dot_schema__service_dot_schema__service__pb2.GetSchemaByIDRequest.SerializeToString,
@@ -35,6 +40,12 @@ class SchemaServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def CreateSchema(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetAllSchemas(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -59,6 +70,11 @@ def add_SchemaServiceServicer_to_server(servicer, server):
                     servicer.CreateSchema,
                     request_deserializer=proto_dot_schema__service_dot_schema__service__pb2.CreateSchemaRequest.FromString,
                     response_serializer=proto_dot_schema__service_dot_schema__service__pb2.CreateSchemaResponse.SerializeToString,
+            ),
+            'GetAllSchemas': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAllSchemas,
+                    request_deserializer=proto_dot_schema__service_dot_schema__service__pb2.GetAllSchemasRequest.FromString,
+                    response_serializer=proto_dot_schema__service_dot_schema__service__pb2.GetAllSchemasResponse.SerializeToString,
             ),
             'GetSchemaByID': grpc.unary_unary_rpc_method_handler(
                     servicer.GetSchemaByID,
@@ -94,6 +110,23 @@ class SchemaService(object):
         return grpc.experimental.unary_unary(request, target, '/alt_team.schema_service.SchemaService/CreateSchema',
             proto_dot_schema__service_dot_schema__service__pb2.CreateSchemaRequest.SerializeToString,
             proto_dot_schema__service_dot_schema__service__pb2.CreateSchemaResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetAllSchemas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/alt_team.schema_service.SchemaService/GetAllSchemas',
+            proto_dot_schema__service_dot_schema__service__pb2.GetAllSchemasRequest.SerializeToString,
+            proto_dot_schema__service_dot_schema__service__pb2.GetAllSchemasResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
